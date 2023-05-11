@@ -29,47 +29,115 @@ func AsciiOutput(arg1 string, arg2 string, arg3 string) {
 	}
 
 	tabascii := ascii
-
-	if len(arg2) != 0 {
-		split := strings.Split(arg2, "\\n")
-		if NewLine(split) {
-			split = split[:len(split)-1]
-		}
-		var res string
-		for _, v := range split {
-			tabrune := []rune(v)
-			if Printable(tabrune) {
-				for j := 0; j < 8; j++ {
-					for i := 0; i < len(tabrune); i++ {
-						res += Print(tabrune[i], j, tabascii)
+	if Extension(arg1) {
+		if len(arg2) != 0 {
+			split := strings.Split(arg2, "\\n")
+			if NewLine(split) {
+				split = split[:len(split)-1]
+			}
+			var res string
+			for k, v := range split {
+				tabrune := []rune(v)
+				if Printable(tabrune) {
+					for j := 0; j < 8; j++ {
+						for i := 0; i < len(tabrune); i++ {
+							res += Print(tabrune[i], j, tabascii)
+						}
+						if len(tabrune) != 0 {
+							res += "\n"
+						} else {
+							res += "\n"
+							break
+						}
 					}
-					if len(tabrune) != 0 {
+					if k == len(split)-1 {
 						res += "\n"
-					} else {
-						break
 					}
+					Filename := OutputName(arg1)
+					sortie, err := os.Create(Filename)
+					if err != nil {
+						fmt.Println(err)
+						return
+					}
+					_, err = sortie.WriteString(res)
+					if err != nil {
+						fmt.Println(err)
+						sortie.Close()
+						return
+					}
+					err = sortie.Close()
+					if err != nil {
+						fmt.Println(err)
+						return
+					}
+				} else {
+					fmt.Println("Error : Non-displayable character !!!")
 				}
-				res += "\n"
-				Filename := OutputName(arg1)
-				sortie, err := os.Create(Filename)
-				if err != nil {
-					fmt.Println(err)
-					return
-				}
-				_, err = sortie.WriteString(res)
-				if err != nil {
-					fmt.Println(err)
-					sortie.Close()
-					return
-				}
-				err = sortie.Close()
-				if err != nil {
-					fmt.Println(err)
-					return
-				}
-			} else {
-				fmt.Println("Error : Non-displayable character !!!")
 			}
 		}
+	} else {
+		fmt.Println("Error: invalid extension!")
+	}
+}
+
+func AsciiOutput1(arg1 string, arg2 string) {
+	ascii := make(map[byte][]string)
+	var index byte = 32
+	banner := Banner("standard")
+	file, _ := os.ReadFile(banner)
+	Split := strings.Split(string(file), "\n")
+	for i := 1; i+8 < len(Split); i += 9 {
+		ascii[index] = Split[i : i+8]
+		index++
+	}
+	tabascii := ascii
+	if Extension(arg1) {
+		if len(arg2) != 0 {
+			split := strings.Split(arg2, "\\n")
+			if NewLine(split) {
+				split = split[:len(split)-1]
+			}
+			var res string
+			for k, v := range split {
+				tabrune := []rune(v)
+				if Printable(tabrune) {
+					for j := 0; j < 8; j++ {
+						for i := 0; i < len(tabrune); i++ {
+							res += Print(tabrune[i], j, tabascii)
+						}
+						if len(tabrune) != 0 {
+							res += "\n"
+						} else {
+							break
+						}
+					}
+					if k == len(split)-1 {
+						res += "\n"
+					}
+
+					Filename := OutputName(arg1)
+					sortie, err := os.Create(Filename)
+					if err != nil {
+						fmt.Println(err)
+						return
+					}
+					_, err = sortie.WriteString(res)
+					if err != nil {
+						fmt.Println(err)
+						sortie.Close()
+						return
+					}
+					err = sortie.Close()
+					if err != nil {
+						fmt.Println(err)
+						return
+					}
+				} else {
+					fmt.Println("Error : Non-displayable character !!!")
+				}
+			}
+		}
+	} else {
+		fmt.Println("Error: invalid extension!")
 	}
 }

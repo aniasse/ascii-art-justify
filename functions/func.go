@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
-	"golang.org/x/term"
+	"os/exec"
 )
 
 func Banner(s string) string {
@@ -14,7 +13,7 @@ func Banner(s string) string {
 
 func Flag(s string) bool {
 	tab := []rune(s)
-	if len(tab) > 8 && string(tab[:8]) == "--color=" {
+	if len(tab) >= 7 && string(tab[:7]) == "--color" {
 		return true
 	} else {
 		return false
@@ -23,7 +22,7 @@ func Flag(s string) bool {
 
 func Output(s string) bool {
 	tab := []rune(s)
-	if len(tab) > 9 && string(tab[:9]) == "--output=" {
+	if len(tab) >= 8 && string(tab[:8]) == "--output" {
 		return true
 	} else {
 		return false
@@ -32,7 +31,7 @@ func Output(s string) bool {
 
 func Align(s string) bool {
 	tab := []rune(s)
-	if len(tab) > 8 && string(tab[:8]) == "--align=" {
+	if len(tab) >= 7 && string(tab[:7]) == "--align" {
 		return true
 	} else {
 		return false
@@ -158,7 +157,24 @@ func taille(s string) int {
 
 	return len(tab[0])
 }
-func AjoutSpace(nb int, s string) {
+func Taille_term() (int, int, error) {
+	cmd := exec.Command("stty", "size")
+	cmd.Stdin = os.Stdin
+	output, err := cmd.Output() // stocker le résultat de la commande
+	if err != nil {
+		return 0, 0, err
+	}
+
+	var width, height int
+	_, err = fmt.Sscanf(string(output), "%d %d", &height, &width) // stocker les coordonnées dans les 2 variables
+	if err != nil {
+		return 0, 0, err
+	}
+
+	return width, height, nil
+}
+
+func AjoutSpace1(nb int, s string) {
 	var space string
 	for i := 0; i < nb; i++ {
 		space += " "
@@ -168,37 +184,76 @@ func AjoutSpace(nb int, s string) {
 		str[i] = space + str[i]
 	}
 	fin := strings.Join(str, "\n")
-
+	fmt.Println(fin)
+}
+func AjoutSpace2(nb int, s string) {
+	var space string
+	for i := 0; i < nb; i++ {
+		space += " "
+	}
+	str := strings.Split(s, "\n")
+	for i := 0; i < len(str); i++ {
+		str[i] = str[i] + space
+	}
+	fin := strings.Join(str, "\n")
 	fmt.Println(fin)
 }
 func lenAscii(s string) int {
 	str := strings.Split(s, "\n")
 	return len(str[0])
 }
-func left(s string) {
-	fmt.Println(s)
-}
-
-func Center(s string) {
-	largeur, _, err := term.GetSize(0)
-	if err != nil {
-		panic(err)
-	}
-	length := taille(s)
-	padding := (largeur - length) / 2
-
-	AjoutSpace(padding, s)
-}
-
-func Right(s string) {
-	largeur, _, err := term.GetSize(0)
+func Left(s string) {
+	largeur, _, err := Taille_term()
 	if err != nil {
 		panic(err)
 	}
 	length := taille(s)
 	padding := largeur - length
 
-	AjoutSpace(padding, s)
+	AjoutSpace2(padding, s)
+}
+func left(s string) {
+	tab := strings.Split(s, "\n")
+
+	for _, v := range tab {
+		Left(v)
+	}
+}
+
+func center(s string) {
+	largeur, _, err := Taille_term()
+	if err != nil {
+		panic(err)
+	}
+	length := taille(s)
+	padding := (largeur - length) / 2
+
+	AjoutSpace1(padding, s)
+}
+func Center(s string) {
+	tab := strings.Split(s, "\n")
+
+	for _, v := range tab {
+		center(v)
+	}
+}
+
+func Right(s string) {
+	largeur, _, err := Taille_term()
+	if err != nil {
+		panic(err)
+	}
+	length := taille(s)
+	padding := largeur - length
+
+	AjoutSpace1(padding, s)
+}
+
+func right(s string) {
+	tab := strings.Split(s, "\n")
+	for _, v := range tab {
+		Right(v)
+	}
 }
 
 func dollars(s string) string {
@@ -214,7 +269,7 @@ func dollars(s string) string {
 	}
 	return string(tab2)
 }
-func justify(text string, width int) string {
+func justify1(text string, width int) string {
 	words := strings.Split(text, "$$$$$$")
 	concat := strings.Join(words, "")
 	numWords := len(words)
@@ -239,12 +294,35 @@ func justify(text string, width int) string {
 	return result
 }
 
-func Justify(s string) {
+func justify2(s string) {
 	world := strings.Split(s, "\n")
-	largeur, _, _ := term.GetSize(0)
+	largeur, _, _ := Taille_term()
 	for i := 0; i < len(world); i++ {
-		world[i] = justify(world[i], largeur)
+		world[i] = justify1(world[i], largeur)
 	}
 	justify := strings.Join(world, "\n")
 	fmt.Println(justify)
+}
+
+func justify(s string) {
+	tab := strings.Split(s, "\n")
+
+	for _, v := range tab {
+		justify2(v)
+	}
+}
+
+func Alignment(s string) bool {
+	if s[8:] != "left" && s[8:] != "right" && s[8:] != "justify" && s[8:] != "center" {
+		return false
+	}
+	return true
+}
+
+func Extension(s string) bool {
+	name := OutputName(s)
+	if len(name) > 4 && name[len(name)-4:] == ".txt" {
+		return true
+	}
+	return false
 }
