@@ -108,6 +108,7 @@ func AsciiOutput1(arg1 string, arg2 string) {
 						if len(tabrune) != 0 {
 							res += "\n"
 						} else {
+							res += "\n"
 							break
 						}
 					}
