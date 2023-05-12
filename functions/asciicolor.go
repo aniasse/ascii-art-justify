@@ -2,24 +2,12 @@ package ascii
 
 import (
 	"fmt"
-	"os"
 	"strings"
 )
 
 func AsciiColor(arg1 string, arg2 string) {
-	ascii := make(map[byte][]string)
-	var index byte = 32
-	file, err := os.ReadFile("./file/standard.txt")
-	if err != nil {
-		fmt.Println("Error : Not a ascci file in the repertory")
-		return
-	}
-	Split := strings.Split(string(file), "\n")
-	for i := 1; i+8 < len(Split); i += 9 {
-		ascii[index] = Split[i : i+8]
-		index++
-	}
-	tabascii := ascii
+	banner := "./file/standard.txt"
+	tabascii := Ascii(banner)
 	if len(arg2) != 0 {
 		split := strings.Split(arg2, "\\n")
 		if NewLine(split) {
@@ -47,19 +35,8 @@ func AsciiColor(arg1 string, arg2 string) {
 }
 
 func AsciiTobeColored(arg1 string, arg3 string) {
-	ascii := make(map[byte][]string)
-	var index byte = 32
-	file, err := os.ReadFile("./file/standard.txt")
-	if err != nil {
-		fmt.Println("Error : Not a ascci file in the repertory")
-		return
-	}
-	Split := strings.Split(string(file), "\n")
-	for i := 1; i+8 < len(Split); i += 9 {
-		ascii[index] = Split[i : i+8]
-		index++
-	}
-	tabascii := ascii
+	banner := "./file/standard.txt"
+	tabascii := Ascii(banner)
 	if len(arg3) != 0 {
 		split := strings.Split(arg3, "\\n")
 		if NewLine(split) {

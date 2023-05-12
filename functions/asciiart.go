@@ -2,25 +2,12 @@ package ascii
 
 import (
 	"fmt"
-	"os"
 	"strings"
 )
 
 func AsciiArt(arg1 string) {
-	ascii := make(map[byte][]string)
-	var index byte = 32
-	file, err := os.ReadFile("./file/standard.txt")
-	if err != nil {
-		fmt.Println("Error : Not a ascci file in the repertory")
-		return
-	}
-	Split := strings.Split(string(file), "\n")
-	for i := 1; i+8 < len(Split); i += 9 {
-		ascii[index] = Split[i : i+8]
-		index++
-	}
-	tabascii := ascii
-
+	banner := "./file/standard.txt"
+	tabascii := Ascii(banner)
 	if len(arg1) != 0 {
 		split := strings.Split(arg1, "\\n")
 		if NewLine(split) {

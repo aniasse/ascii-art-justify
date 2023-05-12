@@ -7,28 +7,7 @@ import (
 )
 
 func AsciiOutput(arg1 string, arg2 string, arg3 string) {
-	ascii := make(map[byte][]string)
-	var index byte = 32
-	banner := Banner(arg3)
-	file, err := os.ReadFile(banner)
-	if err != nil {
-		fmt.Println("Error : Not a ascci file in the repertory")
-	}
-	if arg3 == "thinkertoy" {
-		Split := strings.Split(string(file), "\r\n")
-		for i := 1; i+8 < len(Split); i += 9 {
-			ascii[index] = Split[i : i+8]
-			index++
-		}
-	} else {
-		Split := strings.Split(string(file), "\n")
-		for i := 1; i+8 < len(Split); i += 9 {
-			ascii[index] = Split[i : i+8]
-			index++
-		}
-	}
-
-	tabascii := ascii
+	tabascii := Ascii2(arg3)
 	if Extension(arg1) {
 		if len(arg2) != 0 {
 			split := strings.Split(arg2, "\\n")
@@ -81,16 +60,8 @@ func AsciiOutput(arg1 string, arg2 string, arg3 string) {
 }
 
 func AsciiOutput1(arg1 string, arg2 string) {
-	ascii := make(map[byte][]string)
-	var index byte = 32
-	banner := Banner("standard")
-	file, _ := os.ReadFile(banner)
-	Split := strings.Split(string(file), "\n")
-	for i := 1; i+8 < len(Split); i += 9 {
-		ascii[index] = Split[i : i+8]
-		index++
-	}
-	tabascii := ascii
+	banner := "./file/standard.txt"
+	tabascii := Ascii(banner)
 	if Extension(arg1) {
 		if len(arg2) != 0 {
 			split := strings.Split(arg2, "\\n")
