@@ -12,6 +12,9 @@ func ASciiJystify(arg1 string, arg2 string, arg3 string) {
 	if option == "justify" {
 		tabascii[32] = []string{"$$$$$$", "$$$$$$", "$$$$$$", "$$$$$$", "$$$$$$", "$$$$$$", "$$$$$$", "$$$$$$"}
 	}
+	if option == "false" {
+		fmt.Println("Error: invalid syntax")
+	}
 	var affiche string
 	if Alignment(arg1) {
 		if len(arg2) != 0 {
@@ -73,6 +76,9 @@ func ASciiJystify1(arg1 string, arg2 string) {
 	option := opt(arg1)
 	if option == "justify" {
 		tabascii[32] = []string{"$$$$$$", "$$$$$$", "$$$$$$", "$$$$$$", "$$$$$$", "$$$$$$", "$$$$$$", "$$$$$$"}
+	}
+	if option == "false" {
+		fmt.Println("Error: invalid syntax")
 	}
 	var affiche string
 	if Alignment(arg1) {

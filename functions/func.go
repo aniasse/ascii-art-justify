@@ -188,7 +188,14 @@ func Printable(tab []rune) bool {
 
 func opt(s string) string {
 	t := []rune(s)
-	t2 := t[8:]
+	t2 := []rune{}
+	if t[7] == '=' {
+		t2 = t[8:]
+
+	} else {
+		res := "false"
+		t2 = []rune(res)
+	}
 	return string(t2)
 }
 func taille(s string) int {
