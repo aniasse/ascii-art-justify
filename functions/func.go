@@ -2,6 +2,7 @@ package ascii
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -12,7 +13,7 @@ func Ascii(banner string) map[byte][]string {
 	var index byte = 32
 	file, err := os.ReadFile(banner)
 	if err != nil {
-		fmt.Println("Error : Not a ascci file in the repertory")
+		log.Fatal("Error : Not a ascci file in the repertory")
 	}
 	Split := strings.Split(string(file), "\n")
 	for i := 1; i+8 < len(Split); i += 9 {
@@ -28,7 +29,7 @@ func Ascii2(arg3 string) map[byte][]string {
 	banner := Banner(arg3)
 	file, err := os.ReadFile(banner)
 	if err != nil {
-		fmt.Println("Error : Not a ascci file in the repertory")
+		log.Fatal("Error : Not a ascci file in the repertory")
 	}
 	if arg3 == "thinkertoy" {
 		Split := strings.Split(string(file), "\r\n")
