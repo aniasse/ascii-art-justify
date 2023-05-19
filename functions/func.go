@@ -190,9 +190,8 @@ func Printable(tab []rune) bool {
 func opt(s string) string {
 	t := []rune(s)
 	t2 := []rune{}
-	if t[7] == '=' {
+	if len(t) > 8 && t[7] == '=' {
 		t2 = t[8:]
-
 	} else {
 		res := "false"
 		t2 = []rune(res)
@@ -360,7 +359,7 @@ func justify(s string) {
 }
 
 func Alignment(s string) bool {
-	if s[8:] != "left" && s[8:] != "right" && s[8:] != "justify" && s[8:] != "center" {
+	if len(s) > 8 && s[8:] != "left" && s[8:] != "right" && s[8:] != "justify" && s[8:] != "center" {
 		return false
 	}
 	return true
