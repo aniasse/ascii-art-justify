@@ -372,3 +372,6 @@ func Extension(s string) bool {
 	}
 	return false
 }
+func Error() {
+	fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
+}

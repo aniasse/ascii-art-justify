@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	Func "ascii/functions"
@@ -25,6 +24,6 @@ func main() {
 	} else if len(os.Args) == 3 && Func.Align(os.Args[1]) {
 		Func.ASciiJystify1(os.Args[1], os.Args[2])
 	} else {
-		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nExample: go run . --align=right something standard")
+		Func.Error()
 	}
 }
